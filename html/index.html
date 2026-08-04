@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RTS Command</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head><body>
+
+<div id="root" class="hidden">
+  <header>
+    <div class="logo">RTS<span>CMD</span></div>
+    <div class="header-stats">
+      <div class="hstat"><span id="hsOnline">0</span><label>Online</label></div>
+      <div class="hstat"><span id="hsMatches">0</span><label>Matches</label></div>
+      <div class="hstat"><span id="hsRole">--</span><label>Role</label></div>
+    </div>
+    <div class="header-actions">
+      <button id="btnAdmin" title="Admin Mode"><i class="fas fa-user-secret"></i> Break Glass</button>
+      <button id="btnRefresh"><i class="fas fa-sync-alt"></i></button>
+      <button id="btnClose"><i class="fas fa-times"></i></button>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab active" data-tab="players"><i class="fas fa-users"></i> Players</button>
+    <button class="tab" data-tab="matches"><i class="fas fa-chess-board"></i> Matches</button>
+    <button class="tab" data-tab="builder"><i class="fas fa-hammer"></i> Builder</button>
+    <button class="tab" data-tab="actions"><i class="fas fa-bolt"></i> Actions</button>
+  </nav>
+
+  <main>
+    <section id="tab-players" class="active">
+      <div class="table-wrap">
+        <table><thead><tr><th>ID</th><th>Name</th><th>Ping</th><th>Bucket</th><th>Role</th><th>Actions</th></tr></thead>
+        <tbody id="playerRows"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section id="tab-matches">
+      <div class="match-grid" id="matchGrid"><div class="empty">No active matches</div></div>
+    </section>
+
+    <section id="tab-builder">
+      <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px;text-align:center">
+        <i class="fas fa-info-circle"></i> Build new maps or edit existing ones using the map builder toolset.
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div class="bcard" id="cardArchitect">
+          <div class="bcard-icon"><i class="fas fa-drafting-compass"></i></div>
+          <div class="bcard-title">Create New Map</div>
+          <div class="bcard-desc">Fly with noclip, laser marks the ground, press Enter to start building at that spot.</div>
+          <button class="qbtn" id="qbArchitect" style="margin-top:10px"><i class="fas fa-play"></i>Enter Architect Mode</button>
+        </div>
+        <div class="bcard" id="cardEdit">
+          <div class="bcard-icon"><i class="fas fa-folder-open"></i></div>
+          <div class="bcard-title">Edit Existing Map</div>
+          <div class="bcard-desc">Load an existing battlefield and modify its decorative objects, spawn points or terrain.</div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <select id="bldExisting" style="flex:1"></select>
+            <button class="btn" id="qbLoadMap" style="min-width:60px">Load</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-actions">
+      <div class="quick-grid">
+        <button class="qbtn" id="qaAnnounce"><i class="fas fa-bullhorn"></i>Server Announcement</button>
+        <button class="qbtn" id="qaCleanMatches"><i class="fas fa-trash"></i>End All Matches</button>
+        <button class="qbtn" id="qaClearMutes"><i class="fas fa-comment-slash"></i>Clear All Mutes</button>
+        <button class="qbtn danger" id="qaShutdown"><i class="fas fa-power-off"></i>Kick All Players</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal hidden" id="modalKick"><div class="modal-box"><h3>Kick <span id="mkName"></span></h3>
+  <input id="mkReason" placeholder="Reason"><div class="modal-btns">
+  <button id="mkConfirm" class="btn warn">Kick</button>
+  <button class="btn" onclick="closeModal('modalKick')">Cancel</button></div></div></div>
+
+<div class="modal hidden" id="modalBan"><div class="modal-box"><h3>Ban <span id="mbName"></span></h3>
+  <select id="mbDuration" onchange="onBanDurationChange()"><option value="3600">1 Hour</option><option value="86400">1 Day</option><option value="604800">1 Week</option><option value="0">Permanent</option><option value="-1">Custom</option></select>
+  <input id="mbCustomDate" type="datetime-local" style="display:none;margin-bottom:14px">
+  <input id="mbReason" placeholder="Reason"><div class="modal-btns">
+  <button id="mbConfirm" class="btn danger">Ban</button>
+  <button class="btn" onclick="closeModal('modalBan')">Cancel</button></div></div></div>
+
+<div class="modal hidden" id="modalMute"><div class="modal-box"><h3>Mute <span id="mmName"></span></h3>
+  <select id="mmDuration"><option value="300">5 Minutes</option><option value="600">10 Minutes</option><option value="1800">30 Minutes</option><option value="3600">1 Hour</option></select>
+  <input id="mmReason" placeholder="Reason"><div class="modal-btns">
+  <button id="mmConfirm" class="btn warn">Mute</button>
+  <button class="btn" onclick="closeModal('modalMute')">Cancel</button></div></div></div>
+
+<div class="modal hidden" id="modalAnnounce"><div class="modal-box"><h3>Server Announcement</h3>
+  <input id="maMessage" placeholder="Message to all players..."><div class="modal-btns">
+  <button id="maConfirm" class="btn warn">Send</button>
+  <button class="btn" onclick="closeModal('modalAnnounce')">Cancel</button></div></div></div>
+
+<div class="modal hidden" id="modalConfirm"><div class="modal-box"><h3 id="mcTitle">Confirm</h3>
+  <p id="mcText" style="color:var(--muted);margin-bottom:14px;font-size:0.9rem">Are you sure?</p>
+  <div class="modal-btns">
+  <button id="mcConfirm" class="btn danger">Confirm</button>
+  <button class="btn" onclick="closeModal('modalConfirm')">Cancel</button></div></div></div>
+
+<script src="script.js"></script>
+</body></html>

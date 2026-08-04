@@ -1,0 +1,80 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0b0e11;--card:#13181f;--border:#1e2630;--text:#c8cdd3;--muted:#5c6670;--accent:#e8a838;--red:#cf3a32;--green:#3a9142;--font:'Inter',sans-serif;--mono:'Share Tech Mono',monospace;--head:'Orbitron',sans-serif}
+body{background:transparent;color:var(--text);font-family:var(--font);font-size:18px;overflow:hidden;height:100vh;pointer-events:none}
+#root.hidden{display:none!important}#root:not(.hidden){pointer-events:auto}
+.hidden{display:none!important}
+#root{display:flex;flex-direction:column;height:100vh;background:var(--card)}
+
+header{display:flex;align-items:center;padding:18px 32px;background:var(--card);border-bottom:1px solid var(--border);gap:32px}
+.logo{font-family:var(--head);font-size:2rem;font-weight:900;letter-spacing:4px;color:#fff}
+.logo span{color:var(--accent)}
+.header-stats{display:flex;gap:32px;flex:1}
+.hstat{text-align:center}.hstat span{display:block;font-family:var(--mono);font-size:1.8rem;color:var(--accent)}.hstat label{font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.header-actions{display:flex;gap:10px}
+.header-actions button{background:var(--border);border:none;color:var(--text);padding:12px 20px;border-radius:4px;cursor:pointer;font-size:1rem;transition:all .15s}
+.header-actions button:hover{background:#2a3440}
+#btnAdmin{background:var(--accent);color:#000;font-weight:600}#btnAdmin:hover{filter:brightness(1.1)}
+
+nav{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card)}
+nav .tab{border:none;background:none;color:var(--muted);padding:18px 36px;cursor:pointer;font-family:var(--head);font-size:1rem;letter-spacing:2px;border-bottom:2px solid transparent;transition:all .15s}
+nav .tab:hover{color:var(--text)}
+nav .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+main{flex:1;overflow-y:auto;padding:28px}
+section{display:none}section.active{display:block}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:14px 18px;font-size:0.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid var(--border);font-weight:400}
+td{padding:12px 18px;border-bottom:1px solid var(--border);font-size:1rem}
+tr:hover td{background:rgba(232,168,56,0.04)}
+.empty{padding:48px;text-align:center;color:var(--muted);font-size:1.1rem}
+
+.badge{font-size:0.8rem;padding:4px 12px;border-radius:10px;font-family:var(--mono);font-weight:600;letter-spacing:1px}
+.badge-admin{background:rgba(207,58,50,0.15);color:var(--red)}
+.badge-mod{background:rgba(232,168,56,0.15);color:var(--accent)}
+.badge-support{background:rgba(58,145,66,0.15);color:var(--green)}
+.badge-muted{background:rgba(232,168,56,0.15);color:var(--accent)}
+.badge-player{color:var(--muted)}
+
+.act-row{display:flex;gap:6px}
+.act{background:none;border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:6px;cursor:pointer;font-size:0.9rem;transition:all .15s}
+.act:hover{color:var(--text);border-color:var(--text)}.act.kick:hover{color:var(--red);border-color:var(--red)}.act.ban:hover{color:var(--red);border-color:var(--red)}.act.mute:hover{color:var(--accent);border-color:var(--accent)}
+
+.match-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.mcard{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:20px}
+.mcard h4{font-family:var(--head);font-size:1.1rem;color:var(--accent);letter-spacing:1px;margin-bottom:10px}
+.mcard .mplayer{font-size:1rem;padding:4px 0;display:flex;justify-content:space-between}
+.mcard .mactions{margin-top:12px;display:flex;gap:10px}
+.mcard .mbtn{flex:1;text-align:center;padding:12px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);cursor:pointer;font-size:0.9rem;transition:all .15s}
+.mcard .mbtn:hover{border-color:var(--accent);color:var(--accent)}
+.mcard .mbtn.del:hover{border-color:var(--red);color:var(--red)}
+
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.qbtn{padding:22px;background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--text);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;gap:12px;transition:all .15s}
+.qbtn:hover{border-color:var(--accent)}.qbtn i{font-size:1.4rem;color:var(--accent)}
+.qbtn.danger:hover{border-color:var(--red);color:var(--red)}.qbtn.danger i{color:var(--red)}
+
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:100;pointer-events:auto}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:32px;width:500px;max-width:95vw}
+.modal-box h3{font-family:var(--head);font-size:1.3rem;margin-bottom:20px;color:var(--accent)}
+.modal-box input,.modal-box select{width:100%;padding:14px;margin-bottom:14px;background:var(--bg);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:1.1rem}
+.modal-btns{display:flex;gap:12px}
+.btn{padding:14px 28px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);cursor:pointer;font-size:1rem;transition:all .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.warn{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600}.btn.danger{background:var(--red);border-color:var(--red);color:#fff}
+
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Builder tab */
+select{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:4px;font-size:0.9rem;font-family:var(--font);cursor:pointer}
+select:hover{border-color:var(--accent)}
+select:focus{outline:none;border-color:var(--accent)}
+#bldExisting{flex:1;min-width:200px}
+#tab-builder .panel{margin-top:12px}
+#tab-builder .panel-header{font-size:0.8rem}
+.bcard{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;text-align:center;transition:all .15s}
+.bcard:hover{border-color:var(--accent)}
+.bcard-icon{font-size:2.5rem;color:var(--accent);margin-bottom:12px}
+.bcard-title{font-family:var(--head);font-size:1.1rem;color:var(--text);margin-bottom:8px;letter-spacing:1px}
+.bcard-desc{color:var(--muted);font-size:0.85rem;line-height:1.4;margin-bottom:4px}
